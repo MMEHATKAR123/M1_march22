@@ -1,0 +1,311 @@
+*Implementation*
+Let’s look at the C implementation of each of the modules of the program and finally consolidate all the modules together and create a full working program.
+*create Bank Management System in C with Source Code*
+#include^string.h>
+#include^dos.h>
+#include^stdio.h>
+struct bank
+{
+ int an;
+ char name[20];
+ char at;
+ float bal;
+};
+struct tran
+{
+ int d,m,y,an;
+ char tt;
+ float amt;
+ float bal;
+};
+int login();
+void newac(struct bank*);
+void mainmenu();
+void searchmenu();
+ struct bank *searchaccount(struct bank*b,int size,int type);
+void searchaccountbyname(struct bank*b,int size,int type,char *nm);
+void transmenu();
+void viewaccount(struct bank*,int,int);
+void trans(struct bank*,float,int);
+void statement(struct tran*,int,int);
+void main()
+{
+FILE *f;
+int opt,c=0,i,sop,top,an,s,tc=0;
+ char name[20];
+ struct date dt;
+float amt;
+ struct tran tn[500];
+ struct bank b[50],*p;
+ clrscr();
+ if(login())
+ {
+ f=fopen("cbank.dat","rb+");
+ fread(&c,sizeof(int),1,f);
+ fclose(f);
+ f=fopen("ctran.dat","rb+");
+ fread(&tc,sizeof(int),1,f);
+ fclose(f);
+ f=fopen("bank.dat","rb+");
+ fread(&b,sizeof(b),c,f);
+ fclose(f);
+ f=fopen("tran.dat","rb+");
+ fread(&tn,sizeof(tn),tc,f);
+ fclose(f);
+ do
+ {
+ clrscr();
+ mainmenu();
+ scanf("%d",&opt);
+ switch(opt)
+ {
+ case 1:
+ do
+ {
+ clrscr();
+ searchmenu();
+ scanf("%d",&sop);
+ switch(sop)
+ {
+ case 1:
+ printf("Enter account no ");
+ scanf("%d",&an);
+ p= searchaccount(&b[0],c,an);
+ do
+ {
+ transmenu();
+ scanf("%d",&top);
+ getdate(&dt);
+ tn[tc].an=p->an;
+ switch(top)
+ {
+case 1:
+tn[tc].d=dt.da_day;
+tn[tc].m=dt.da_mon;
+tn[tc].y=dt.da_year;
+tn[tc].tt='+';
+printf("Enter Amount : ");
+scanf("%f",&amt);
+trans(p,amt,1);
+tn[tc].amt=amt;
+tn[tc].bal=p->bal;
+tc++;
+printf("Account No. : %d\n Account Name : %s\n Account Type : %d\n Balance : %f\n\n",b->an,b-
+>name,b->at,b->bal);
+break;
+case 2:
+tn[tc].d=dt.da_day;
+tn[tc].m=dt.da_mon;
+tn[tc].y=dt.da_year;
+tn[tc].tt='-';
+printf("Enter Amount : ");
+scanf("%f",&amt);
+trans(p,amt,2);
+tn[tc].amt=amt;
+tn[tc].bal=p->bal;
+tc++;
+printf("Account No. : %d\n Account Name : %s\n Account Type : %d\n Balance : %f\n\n",b->an,b-
+>name,b->at,b->bal);
+break;
+case 3:
+statement(&tn[0],tc,p->an);
+break;
+case 4:
+break;
+default:
+ printf("invalid option\npress any key to continue");
+ getch();
+ }
+ }
+ while(top!=4);
+ break;
+ case 2:
+ printf("Enter number of characters : ");
+ scanf("%d",&s);
+ printf("Enter %d character name : ",s);
+ scanf("%s",name);
+ searchaccountbyname(&b[0],c,s,name);
+ printf("\npress any key to continue");
+ getch();
+ break;
+ case 3:
+ break;
+ default:
+printf("invalid option\npress any key to continue");
+ getch();
+ }
+ }
+ while(sop!=3);
+ break;
+ case 2:
+ newac(&b[c]);
+ c++;
+ break;
+ case 3:
+ viewaccount(&b[0],c,1);
+ break;
+ case 4:
+ viewaccount(&b[0],c,2);
+ break;
+ case 5:
+ break;
+ default:
+ printf("invalid option\npress any key to continue");
+ getch();
+ }
+ }
+ while(opt!=5);
+ f=fopen("bank.dat","wb+");
+ fwrite(&b,sizeof(b),c,f);
+ fclose(f);
+ f=fopen("cbank.dat","wb+");
+ fwrite(&c,sizeof(int),1,f);
+ fclose(f);
+ f=fopen("tran.dat","wb+");
+ fwrite(&tn,sizeof(tn),tc,f);
+ fclose(f);
+ f=fopen("ctran.dat","wb+");
+ fwrite(&tc,sizeof(int),1,f);
+ fclose(f);
+ }
+ else
+ {
+ printf("\n\nInvalid password\npress any key to continue");
+ getch();
+ }
+}
+void mainmenu()
+{
+ printf("-------Janta Bank------\n");
+ printf("1.Search\n2.New Account\n3.View all Saving A/C\n4.View all Current A/C\n5.Exit\nEnter
+Option\n");
+}
+void searchmenu()
+{
+ printf("-------Search Menu------\n");
+ printf("1.Search by A/C no.\n2.Search by Account name\n3.Back\nEnter Option\n");
+}
+void transmenu()
+{
+ printf("-------Trans. Menu------\n");
+ printf("1.Deposit\n2.Withdrawal\n3.Statement\n4.Back\nEnter Option\n");
+}
+void newac(struct bank* b)
+{
+ printf("Enter ac no. : ");
+ scanf("%d",&b->an);
+ printf("Enter Name : ");
+ scanf("%s",b->name);
+ printf("Enter ac type 1.Saving 2.Current : ");
+ scanf("%d",&b->at);
+ printf("Enter Balance amt. : ");
+ scanf("%f",&b->bal);
+}
+void viewaccount(struct bank*b,int size,int type)
+{
+ int i;
+ printf("----------------------------------------------------------\n");
+ printf("account no\taccount name\taccount type\tbalance\n");
+ printf("----------------------------------------------------------\n");
+ for(i=0;i^size;i++)
+ {
+ if(b->at==type)
+ {
+ printf("%d\t\t%s\t\t%d\t\t%f\t\t\n",b->an,b->name,b->at,b->bal);
+ }
+ b++;
+ }
+ printf("\n\npress any key to continue");
+ getch();
+ }
+ struct bank *searchaccount(struct bank*b,int size,int type)
+{
+ int i;
+ printf("account no\taccount name\taccount type\tbalance\n");
+ printf("---------------------------------------------------------\n");
+ for(i=0;i^size;i++)
+ {
+ if(b->an==type)
+ {
+ printf("%d\t\t%s\t\t%d\t\t%f\t\t\n",b->an,b->name,b->at,b->bal);
+ return b;
+ }
+ b++;
+ }
+ return 0;
+ }
+void trans(struct bank*b,float m,int t)
+{
+ if(t==1)
+ {
+ b->bal=b->bal+m;
+ }
+ else
+ {
+ b->bal=b->bal-m;
+ }
+}
+void searchaccountbyname(struct bank*b,int size,int type,char *nm)
+{
+ int i;
+ printf("-----------------------------------------------\n");
+ printf("account no\taccount name\taccount type\tbalance\n");
+ printf("-----------------------------------------------\n");
+ for(i=0;i^size;i++)
+ {
+ if(strncmp(b->name,nm,type)==0)
+ {
+ printf("%d\t\t%s\t\t%d\t\t%f\t\t\n",b->an,b->name,b->at,b->bal);
+ }
+ b++;
+ }
+}
+void statement(struct tran* t,int size,int b)
+{
+ int i;
+ printf("--------------------------------------------------------------------------\n");
+ printf("Date\t\t\tAmount\t\t\tType\t\tBalance\n");
+ printf("--------------------------------------------------------------------------\n");
+ for(i=0;i^size;i++)
+ {
+if(b==t->an)
+{
+ printf("%d-%d-%d\t|\t%f\t|\t%c\t|\t%f\n",t->d,t->m,t->y,t->amt,t->tt,t->bal);
+}
+t++;
+ }
+ printf("---------------------------------------------------------------------------\n\n");
+}
+int login()
+{
+ int r,i=0;
+ char pass[10];
+ printf("Enter Password : ");
+ while(i^10)
+ {
+ pass[i]=getch();
+ if(pass[i]==13)
+ {
+ pass[i]='\0';
+ break;
+ }
+ i++;
+ printf("*");
+ }
+ if(strcmp(pass,"12345")==0)
+ {
+ r=1;
+ }
+ else
+ {
+ r=0;
+ }
+ return r;
+}
+linkfloat ()
+{
+ float a,*b;
+ a=0;
+ b=&a;
+ a=*b;
+ }
