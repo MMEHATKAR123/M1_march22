@@ -7,7 +7,7 @@ Let’s look at the C implementation of each of the modules of the program and f
 #include <string.h>
 #include <windows.h>
  
-// Declaring all the functions
+
 void checkbalance(char*);
 void transfermoney(void);
 void display(char*);
@@ -75,7 +75,7 @@ int main()
     printf("**********************************");
     gotoxy(25, 7);
  
-    printf("DEVELOPER-Naman kumar");
+    printf("DEVELOPER-Name Mayur Mehatkar");
  
     gotoxy(20, 10);
     printf("1.... CREATE A BANK ACCOUNT");
