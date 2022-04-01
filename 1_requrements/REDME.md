@@ -15,13 +15,13 @@ The Mini Project for Bank Management System in C is a consoled based application
 Design <br>
     </h4>
   <h3>
-•	Structural<br>
+•	Structural-<br>
     </h4>
 In Bank Management System in C  Programming language has many data structures like an array, stack, queue, linked list, tree, etc. A programmer selects an appropriate data structure and uses it according to their convenience<br>
   <h3>
-•	Implement <br>
+•	Implement- <br>
     <h3>
-	C program base on implementation<br>
+	C program base on implementation-<br>
       </h3>
 We use the following steps to create and execute C programs in Windows OS<br>
     </h4>
@@ -30,6 +30,8 @@ We use the following steps to create and execute C programs in Windows OS<br>
 •	Step 3: Executing / Running Executable File (Ctrl + F9)<br>
 •	Step 4: Check Result (Alt + F5)<br>
   <h3>
-	Test plan and outcome<br>
+	Test plan and outcome-<br>
 	  <h3>
-![BANK SYSTEM OUT PUT ](https://user-images.githubusercontent.com/101090081/161232990-e577ec2d-cd27-427f-88bf-b06f7e3eba08.png)
+![BANK SYSTEM OUT PUT ](https://user-images.githubusercontent.com/101090081/161232990-e577ec2d-cd27-427f-88bf-b06f7e3eba08.png)<br>
+		  <h3>
+			  Gefining our system-
