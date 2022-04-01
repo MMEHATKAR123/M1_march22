@@ -31,3 +31,5 @@ We use the following steps to create and execute C programs in Windows OS<br>
 •	Step 4: Check Result (Alt + F5)<br>
   <h3>
 	Test plan and outcome<br>
+	  <h3>
+![BANK SYSTEM OUT PUT ](https://user-images.githubusercontent.com/101090081/161232990-e577ec2d-cd27-427f-88bf-b06f7e3eba08.png)
